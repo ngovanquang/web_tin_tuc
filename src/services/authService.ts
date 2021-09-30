@@ -24,7 +24,7 @@ const signToken = (userInfo: any): string => {
 
 /**
  * Validate token
- * @param token 
+ * @param token
  */
 const validToken = (token: string): boolean => {
     try {
@@ -39,7 +39,7 @@ const validToken = (token: string): boolean => {
 
 /**
  * Decode and get the payload data from token
- * @param token 
+ * @param token
  */
 const getPayload = (token: string): any => {
     return jwt.decode(token);
@@ -52,14 +52,15 @@ const getPayload = (token: string): any => {
  * @param email Email
  */
 const register = async (username: string, password: string, email: string): Promise<boolean> => {
-    let passSalt = cryptoRandomString({length: 20, type: 'alphanumeric'});
-    let createdDate = moment().format('YYYY-MM-DD HH:mm:ss');
-    let hashedPassword = HmacSHA256(password, passSalt);
+    const passSalt = cryptoRandomString({length: 20, type: 'alphanumeric'});
+    const createdDate = moment().format('YYYY-MM-DD HH:mm:ss');
+    const hashedPassword = HmacSHA256(password, passSalt);
+    const isActive:number = 0;
     // SQL query
-    let query = `INSERT INTO USERS (UserName, Password, PassSalt, Email, CreatedDate)
-                VALUES ('${username}', '${hashedPassword}', '${passSalt}', '${email}', '${createdDate}')`;
+    const query = `INSERT INTO USERS (UserName, Password, PassSalt, Email, CreatedDate, isActive)
+                VALUES ('${username}', '${hashedPassword}', '${passSalt}', '${email}', '${createdDate}', '${isActive}')`;
 
-    let result = await sql.executeQuery(query);
+    const result = await sql.executeQuery(query);
     if (result > 0) {
         return true;
     }
@@ -73,11 +74,11 @@ const register = async (username: string, password: string, email: string): Prom
  * @param password Mật khẩu
  */
 const validUser = async (username: string, password: string): Promise<boolean> => {
-    let query = `SELECT Password, PassSalt FROM Users WHERE UserName = '${username}'`;
-    let result = await sql.selectQuery(query);
+    const query = `SELECT Password, PassSalt FROM Users WHERE UserName = '${username}'`;
+    const result = await sql.selectQuery(query);
 
     if (result.length === 1) {
-        let hashedPass = HmacSHA256(password, result[0].PassSalt);
+        const hashedPass = HmacSHA256(password, result[0].PassSalt);
         return hashedPass === result[0].Password ? true : false;
     }
     return false;
@@ -88,9 +89,9 @@ const validUser = async (username: string, password: string): Promise<boolean> =
  * @param username Tên đăng nhập
  */
 const getUser = async (username: string): Promise<any> => {
-    let query = `SELECT u.Id, UserName, Email, RoleName, u.CreatedDate FROM Users AS u, UserInRole AS uir, Roles AS r 
+    const query = `SELECT u.Id, UserName, Email, RoleName, u.CreatedDate FROM Users AS u, UserInRole AS uir, Roles AS r
                 WHERE UserName = '${username}' AND uir.UserId = u.Id AND r.Id = uir.RoleId`;
-    let result = await sql.selectQuery(query);
+    const result = await sql.selectQuery(query);
     if (result.length === 1) {
         return {
             id: result[0].Id,

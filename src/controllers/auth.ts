@@ -5,7 +5,7 @@ import authService from '../services/authService';
  * Login to system
  * @param req http request
  * @param res http response
- * @param next 
+ * @param next
  */
 const login = async (req: Request, res: Response, next: NextFunction) => {
     try {

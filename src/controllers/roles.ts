@@ -4,17 +4,17 @@ import roleService from '../services/roleService';
 
 /**
  * Add a new role to database
- * @param req 
- * @param res 
- * @param next 
- * @returns 
+ * @param req
+ * @param res
+ * @param next
+ * @returns
  */
 const addNewRole = async (req:Request, res:Response, next: NextFunction) => {
     try {
-        let roleName: string = req.body.roleName;
-        let description: string = req.body.description;
+        const roleName: string = req.body.roleName;
+        const description: string = req.body.description;
 
-        let role = await roleService.addRole(roleName, description);
+        const role = await roleService.addRole(roleName, description);
 
         if (role) {
             return res.status(200).json({

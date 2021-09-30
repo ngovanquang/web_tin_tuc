@@ -4,7 +4,7 @@ import logger from '../middlewares/logger';
 
 
 // Defaut config
-let sqlConfig = {
+const sqlConfig = {
     user: '',
     password: '',
     database: '',
@@ -22,13 +22,13 @@ let sqlConfig = {
 
 /**
  * Get connection
- * @returns 
+ * @returns
  */
 const getConnection = async (): Promise<ConnectionPool> => {
-    let user: string = config.get('sql.user');
-    let password: string = config.get('sql.password');
-    let database: string = config.get('sql.dbName');
-    let server: string = config.get('sql.host');
+    const user: string = config.get('sql.user');
+    const password: string = config.get('sql.password');
+    const database: string = config.get('sql.dbName');
+    const server: string = config.get('sql.host');
 
     sqlConfig.user = user;
     sqlConfig.password = password;
@@ -39,11 +39,11 @@ const getConnection = async (): Promise<ConnectionPool> => {
 }
 
 const selectQuery = async (query: string): Promise<any> => {
-    try { 
+    try {
         const LOG_TITLE = '[SQL query]:';
         logger.debug(LOG_TITLE, query);
-        let conn = await getConnection();
-        let result = await conn.query(query);
+        const conn = await getConnection();
+        const result = await conn.query(query);
         return result.recordset;
     } catch (error) {
         logger.error(error);
@@ -59,8 +59,8 @@ const selectQuery = async (query: string): Promise<any> => {
     try {
         const LOG_TITLE = '[SQL Execute]:';
         logger.debug(LOG_TITLE, query);
-        let conn = await getConnection();
-        let result = await conn.query(query);
+        const conn = await getConnection();
+        const result = await conn.query(query);
         return result.rowsAffected;
     } catch (error) {
         logger.error(error);
